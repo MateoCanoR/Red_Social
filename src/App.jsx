@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Navbar from './components/Navbar'
 import ProfileCard from './components/ProfileCard'
 import Accordion from './components/Accordion'
@@ -8,7 +9,7 @@ import PostCard from './components/PostCard'
 import SidebarRight from './components/SidebarRight'
 
 function App() {
-  const posts = [
+  const [posts, setPosts] = useState([
     {
       id: 1,
       author: 'John Doe',
@@ -37,7 +38,19 @@ function App() {
       images: ['https://www.w3schools.com/w3images/nature.jpg'],
       extraContent: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
-  ]
+  ])
+
+  const addPost = (newPost) => {
+    const post = {
+      id: posts.length + 1,
+      author: 'Mi Perfil',
+      avatar: 'https://www.w3schools.com/w3images/avatar3.png',
+      time: 'Ahora',
+      content: newPost,
+      images: []
+    }
+    setPosts([post, ...posts])
+  }
 
   return (
     <div className="w3-theme-l5">
@@ -60,7 +73,7 @@ function App() {
           <div className="w3-col m7">
             <div className="w3-row-padding">
               <div className="w3-col m12">
-                <StatusInput />
+                <StatusInput onAddPost={addPost} />
               </div>
             </div>
 

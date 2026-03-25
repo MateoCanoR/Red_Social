@@ -3,6 +3,11 @@ import { useState } from 'react'
 function Navbar() {
   const [notificationsOpen, setNotificationsOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [notifications, setNotifications] = useState([
+    'Una nueva solicitud de amistad',
+    'John Doe publicó en tu muro',
+    'Jane te dio Like'
+  ])
 
   const toggleNotifications = () => {
     setNotificationsOpen(!notificationsOpen)
@@ -10,6 +15,11 @@ function Navbar() {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
+  }
+
+  const clearNotifications = () => {
+    setNotifications([])
+    setNotificationsOpen(false)
   }
 
   return (
@@ -28,47 +38,79 @@ function Navbar() {
 
           {/* Logo */}
           <a href="#" className="w3-bar-item w3-button w3-padding-large w3-theme-d4">
-            <i className="fa fa-home w3-margin-right"></i>Logo
+            <i className="fa fa-home w3-margin-right"></i>Red Social
           </a>
 
           {/* Navigation icons */}
-          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News">
+          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Inicio">
             <i className="fa fa-globe"></i>
           </a>
-          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings">
+          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Mi Perfil">
             <i className="fa fa-user"></i>
           </a>
-          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages">
+          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Mensajes">
             <i className="fa fa-envelope"></i>
           </a>
 
           {/* Notifications dropdown */}
           <div className="w3-dropdown-hover w3-hide-small">
-            <button className="w3-button w3-padding-large" title="Notifications" onClick={toggleNotifications}>
+            <button 
+              className="w3-button w3-padding-large" 
+              title="Notificaciones" 
+              onClick={toggleNotifications}
+            >
               <i className="fa fa-bell"></i>
-              <span className="w3-badge w3-right w3-small w3-green">3</span>
+              {notifications.length > 0 && (
+                <span className="w3-badge w3-right w3-small w3-green">{notifications.length}</span>
+              )}
             </button>
-            <div className={`w3-dropdown-content w3-card-4 w3-bar-block ${notificationsOpen ? 'w3-show' : ''}`} style={{ width: 300 }}>
-              <a href="#" className="w3-bar-item w3-button">One new friend request</a>
-              <a href="#" className="w3-bar-item w3-button">John Doe posted on your wall</a>
-              <a href="#" className="w3-bar-item w3-button">Jane likes your post</a>
-            </div>
+            {notificationsOpen && (
+              <div className="w3-dropdown-content w3-card-4 w3-bar-block" style={{ width: 300 }}>
+                {notifications.length > 0 ? (
+                  <>
+                    {notifications.map((notif, index) => (
+                      <a 
+                        key={index}
+                        href="#" 
+                        className="w3-bar-item w3-button w3-hover-light-grey"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          alert(notif)
+                        }}
+                      >
+                        {notif}
+                      </a>
+                    ))}
+                    <button 
+                      className="w3-bar-item w3-button w3-light-grey w3-text-red"
+                      onClick={clearNotifications}
+                    >
+                      <i className="fa fa-trash"></i> Limpiar
+                    </button>
+                  </>
+                ) : (
+                  <p className="w3-bar-item">Sin notificaciones</p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* User avatar */}
-          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
-            <img src="https://www.w3schools.com//w3images/avatar2.png" className="w3-circle" style={{ height: 23, width: 23 }} alt="Avatar" />
+          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Mi Cuenta">
+            <img src="https://www.w3schools.com/w3images/avatar2.png" className="w3-circle" style={{ height: 23, width: 23 }} alt="Avatar" />
           </a>
         </div>
       </div>
 
       {/* Mobile navigation */}
-      <div id="navDemo" className={`w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large ${mobileMenuOpen ? 'w3-show' : ''}`}>
-        <a href="#" className="w3-bar-item w3-button w3-padding-large">Link 1</a>
-        <a href="#" className="w3-bar-item w3-button w3-padding-large">Link 2</a>
-        <a href="#" className="w3-bar-item w3-button w3-padding-large">Link 3</a>
-        <a href="#" className="w3-bar-item w3-button w3-padding-large">My Profile</a>
-      </div>
+      {mobileMenuOpen && (
+        <div className="w3-bar-block w3-theme-d2 w3-hide-large w3-hide-medium w3-large">
+          <a href="#" className="w3-bar-item w3-button w3-padding-large">Inicio</a>
+          <a href="#" className="w3-bar-item w3-button w3-padding-large">Mi Perfil</a>
+          <a href="#" className="w3-bar-item w3-button w3-padding-large">Mensajes</a>
+          <a href="#" className="w3-bar-item w3-button w3-padding-large">Configuración</a>
+        </div>
+      )}
     </>
   )
 }
